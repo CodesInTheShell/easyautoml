@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block content %}
+  
+<div class="container">
+
+  <div class="col-sm-12">
+
+    <h5>Model information</h5><br>
+
+    {% if session['modelselected'] %}
+        Selected model: {{session['modelselected']}}<br>
+        Model accuracy: {{session['model_acc']}}%<br>
+        Model description: {{session['model_desc']}}<br><br>
+    {% endif %}
+    
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-sm-8">
+      <form action = {{ url_for('predicstart') }} method="POST" enctype="multipart/form-data">
+      Enter the required values as indicated:<br><br>
+
+      {% if session['model_cols'] %}
+        {% for col in session['model_cols'] %}
+        <div class="form-group">
+          <input type="text" class="form-control" id="" name={{col}} placeholder={{col}}>
+        </div>
+        {% endfor %}
+      {% endif %}
+
+      <button type="submit" class="btn btn-primary">Predict</button>
+      </form>
+    </div>
+
+    <div class="col-sm-4">
+      <div class="form-group">
+          <label for="predicted_res_label">Predicted result: </label>
+          {% if session['class_predicted'] %}
+            <input type="text" class="form-control" id="predicted_res_label" name="predicted_res_label" value={{session['class_predicted']}} readonly >
+          {% else %}
+              <input type="text" class="form-control" id="predicted_res_label" name="predicted_res_label" placeholder="Result will be shown here" value="" readonly >
+          {% endif %}
+
+          <br>
+          <label for="predicted_proba_label">Prediction probability percentage: </label>
+          {% if session['predicted_proba_value'] %}
+            <input type="text" class="form-control" id="predicted_proba_label" name="predicted_proba_label" value={{session['predicted_proba_value']}} readonly >
+          {% else %}
+              <input type="text" class="form-control" id="predicted_proba_label" name="predicted_proba_label" placeholder="Result will be shown here" value="" readonly >
+          {% endif %}
+          
+        </div>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+{% endblock %}

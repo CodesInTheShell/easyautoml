@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+  
+<div class="container">
+  <div class="row">
+    <!-- <div class="col-sm-4">
+    </div> -->
+
+    <div class="col-sm-8">
+      <form action = {{ url_for('trainstart') }} method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="file">Select the csv file dataset for training: </label>
+          <input id="file" type="file" name="file" />
+        </div>
+        <div class="form-group">
+          <label for="targetname_input">Column field to make prediction:</label>
+          <input type="text" class="form-control" id="targetname_input" name="targetname_input" placeholder="target_column">
+        </div>
+        <div class="form-group">
+          <label for="modelname_input">Model name:</label>
+          <input type="text" class="form-control" id="modelname_input" name="modelname_input">
+        </div>
+        <div class="form-group">
+          <label for="description_textarea">Model description:</label>
+          <textarea class="form-control" rows="5" id="description_textarea" name="description_textarea" placeholder="Description of model"></textarea>
+        </div>
+
+        <hr>
+
+        <h3>Advance configuration</h3>
+
+        <div class="form-group">
+          <label for="train_time_input">Training time:</label>
+          <input type="text" class="form-control" id="train_time_input" name="train_time_input" value="60"> Maximum training time in minutes. Defaults to 60 minutes.
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">Train</button>
+      </form>
+    </div>
+
+    <div class="col-sm-4">
+    </div>
+  </div>
+</div>
+
+<hr>
+
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block content %}
+	
+<div class="container">
+
+	<div class="row">
+		<div class="col-sm-12">
+			<p>Machine learning simplified for humans.</p>
+			<p>Allowing non-programmers to develop machine learning model by simplifying and automating the process.</p>
+		</div>
+	</div>
+	<br><br>
+
+
+
+	<div class="row">
+		<div class="col-sm-6">
+			<a href={{ url_for('train') }}><button type="button" class="btn btn-primary">Train</button></a>
+			<p>Train your model. You only need to provide your training dataset.</p>
+		</div>
+		<div class="col-sm-6">
+			<!-- <a href={{ url_for('predict') }}> -->
+			<button type="button" class="btn btn-success" data-toggle="modal" data-target="#model_select_modal">Predict</button><!-- </a> -->
+			<p>Use your trained model to make predictions.</p>
+		</div>
+	</div>
+
+	<!-- The Modal -->
+	<div class="modal" id="model_select_modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">Select model</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				
+				<!-- Modal body -->
+				<div class="modal-body">
+					<form action={{ url_for('modelselect') }} method="POST">
+						<div class="form-group">
+							<label for="modelselected">Select your model to use for prediction.:</label>
+							<select class="form-control" id="modelselected" name="modelselected">
+								{% for model in session['models'] %}
+								<option>{{ model }}</option>
+								{% endfor %}
+							</select>
+							<br>
+						</div>
+						<button type="submit" class="btn btn-primary">Select</button>
+					</form>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}

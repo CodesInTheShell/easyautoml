@@ -1,0 +1,13 @@
+sex
+age
+guardian
+traveltime
+studytime
+failures
+schoolsup
+famsup
+paid
+internet
+freetime
+health
+absences

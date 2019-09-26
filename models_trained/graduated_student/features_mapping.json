@@ -1,0 +1,27 @@
+{
+    "sex": {
+        "F": 0,
+        "M": 1
+    },
+    "guardian": {
+        "father": 0,
+        "mother": 1,
+        "other": 2
+    },
+    "schoolsup": {
+        "no": 0,
+        "yes": 1
+    },
+    "famsup": {
+        "no": 0,
+        "yes": 1
+    },
+    "paid": {
+        "no": 0,
+        "yes": 1
+    },
+    "internet": {
+        "no": 0,
+        "yes": 1
+    }
+}
