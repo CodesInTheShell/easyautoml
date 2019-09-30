@@ -57,7 +57,12 @@ docker exec -it <container_id> rm -rf ./models_trained/<model_name>
 =========================================================================
 
 # Video tutorial can be found on youtube
+
+## Using web dashboard
 https://www.youtube.com/watch?v=NNnEmgt2V3s&t=21s
+
+## Using API
+https://www.youtube.com/watch?v=-PJivGyKhH4
 
 
 =========================================================================
