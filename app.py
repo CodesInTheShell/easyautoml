@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, jsonify
 import config
 from controllers import ModelsLoader, SessionManager, TrainStartManager, PredictStartManager
 import pandas
@@ -6,6 +6,7 @@ import time
 import pickle
 import numpy as np
 import json
+import os.path
 
 
 app = Flask(__name__)
@@ -93,6 +94,65 @@ def modelselect():
 	SessionManager().add_to_session(session, 'model_cols', columns)
 
 	return redirect('/predict')
+
+
+# -- TODO -- Create a blueprint for APIs. These APIs are for DEMO purpose only
+
+@app.route('/api/trainstart', methods = ['POST'])
+def api_trainstart():
+
+	# - TODO - Apply async
+
+	if request.method == 'POST':
+
+		result = request.form
+		modelname = result['modelname_input']
+		targetname = result['targetname_input']
+		model_desc = result['description_textarea']
+		traning_time = int(result['train_time_input']) * 60
+
+		df = pandas.read_csv(request.files.get('file'))
+
+		status = TrainStartManager().start_training(targetname, df, modelname, model_desc, traning_time)
+		
+		if status['status'] == 'Error':
+			return jsonify(status)
+
+		return jsonify(status)
+
+@app.route('/api/predict_csv/', methods = ['POST'])
+def api_predict_csv():
+
+	if request.method == 'POST':
+		result = request.form
+		modelselected = result['modelselected']
+
+		df = pandas.read_csv(request.files.get('file'))
+		for column in df.columns:
+			if os.path.exists(config.MODELS_DIR + modelselected + '/{}.pkl'.format(column)):
+				print('in')
+				with open(config.MODELS_DIR + modelselected + '/{}.pkl'.format(column), 'rb') as pkl:
+					pkl = pickle.load(pkl)
+					df[column] = pkl.transform(df[column])
+
+		with open(config.MODELS_DIR + modelselected + '/' + modelselected + '.pkl', 'rb') as model_pkl:
+			model = pickle.load(model_pkl)
+		with open(config.MODELS_DIR + modelselected + '/' + 'le_target.pkl', 'rb') as target_pkl:
+			le_target = pickle.load(target_pkl)
+
+		class_predicted = list(le_target.inverse_transform(model.predict(df)))
+		predict_probabilities = model.predict_proba(df)
+
+		maxInRows = np.amax(predict_probabilities, axis=1)
+
+		dataset = pandas.DataFrame(class_predicted, columns =['Class'])
+		probabilities = pandas.DataFrame(list(maxInRows), columns =['Probability'])
+		
+		status={}
+		status['status'] = 'Success'
+		status['results'] = dataset.join(probabilities).to_json()
+		# print(pandas.read_json(dataset.join(probabilities).to_json()))
+		return jsonify(status)
 
 if __name__ == '__main__':
 	app.run(debug=True)
