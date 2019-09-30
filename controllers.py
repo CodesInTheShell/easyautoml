@@ -76,10 +76,11 @@ class TrainStartManager():
 		automl = autosklearn.classification.AutoSklearnClassifier(time_left_for_this_task=self.traning_time)
 		automl.fit(X_train, y_train)
 		y_hat = automl.predict(X_test)
-		print("Accuracy score", sklearn.metrics.accuracy_score(y_test, y_hat))
+		accuracy = str(sklearn.metrics.accuracy_score(y_test, y_hat))
+		print("Accuracy score", accuracy)
 
 		model_info = {
-			'accuracy_score': str(sklearn.metrics.accuracy_score(y_test, y_hat)),
+			'accuracy_score': accuracy,
 			'description': str(self.model_desc)
 		}
 		with open(proj_dir + 'model_info.json', 'w', encoding='utf-8') as f:
@@ -88,7 +89,10 @@ class TrainStartManager():
 		with open(proj_dir + '{}.pkl'.format(self.modelname), 'wb') as f:
 			pickle.dump(automl, f)
 
-		status['status'] = 'Ok'
+		status['status'] = 'Success'
+		status['message'] = 'Model has been created'
+		status['accuracy'] = accuracy
+		status['modelname'] =self.modelname
 		return status
 
 

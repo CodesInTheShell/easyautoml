@@ -1,0 +1,8 @@
+Gender
+Age
+Scholarship
+Hypertension
+Diabetes
+Alcoholism
+Handcap
+SMS_received
