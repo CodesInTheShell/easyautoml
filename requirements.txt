@@ -15,7 +15,7 @@ idna==2.8
 imagesize==1.1.0
 itsdangerous==1.1.0
 Jinja2==2.10.1
-joblib==0.13.2
+joblib==1.2.0
 jsonschema==2.6.0
 liac-arff==2.4.0
 lockfile==0.12.2
